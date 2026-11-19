@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FindIt School — Barang Hilang & Temuan</title>
+<style>
+:root{--blue:#1768d5;--blue2:#0e54b7;--ink:#17243b;--muted:#718096;--line:#e6edf5;--bg:#f4f7fb;--white:#fff;--green:#16834a;--orange:#b86a08;--shadow:0 12px 35px rgba(28,61,105,.08)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+button,input,select,textarea{font:inherit}button{cursor:pointer}.app{min-height:100vh}.topbar{height:72px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 max(22px,calc((100% - 1160px)/2));position:sticky;top:0;z-index:5}
+.brand{display:flex;align-items:center;gap:11px;font-weight:800;font-size:20px;letter-spacing:-.5px}.logo{height:38px;width:38px;border-radius:12px;background:linear-gradient(135deg,#3288f3,#1258bd);display:grid;place-items:center;color:white;font-size:21px;box-shadow:0 5px 14px #1768d544}.brand span:last-child{color:var(--blue)}
+.nav{display:flex;gap:8px}.nav button{border:0;background:transparent;color:#63728a;padding:10px 14px;border-radius:10px;font-weight:650}.nav button.active,.nav button:hover{background:#edf4ff;color:var(--blue)}.top-actions{display:flex;gap:10px;align-items:center}.avatar{width:36px;height:36px;border-radius:50%;background:#eaf2ff;color:var(--blue);display:grid;place-items:center;font-weight:800}
+main{max-width:1160px;margin:0 auto;padding:30px 22px 60px}.hero{background:linear-gradient(115deg,#1258bd,#2781eb);color:white;border-radius:22px;padding:30px 34px;display:flex;justify-content:space-between;align-items:center;gap:20px;overflow:hidden;position:relative;box-shadow:var(--shadow)}.hero:after{content:"";position:absolute;width:260px;height:260px;border:1px solid #ffffff2a;border-radius:50%;right:12%;top:-130px;box-shadow:0 0 0 35px #ffffff0c,0 0 0 70px #ffffff0a}.hero h1{font-size:clamp(25px,4vw,34px);line-height:1.15;margin:0 0 9px;letter-spacing:-1px}.hero p{margin:0;color:#e4efff;max-width:560px}.hero-actions{display:flex;gap:10px;flex-wrap:wrap;z-index:1}.btn{border:0;border-radius:11px;padding:11px 16px;font-weight:750;transition:.18s;display:inline-flex;align-items:center;justify-content:center;gap:8px}.btn:hover{transform:translateY(-1px)}.btn-primary{background:var(--blue);color:#fff}.btn-white{background:#fff;color:var(--blue)}.btn-ghost{background:#ffffff20;color:#fff;border:1px solid #ffffff55}.btn-light{background:#edf4ff;color:var(--blue)}.btn-danger{background:#fff0f0;color:#bd3434}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:22px 0}.stat{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px 20px;display:flex;align-items:center;gap:14px;box-shadow:0 3px 12px #193b6505}.stat-icon{width:44px;height:44px;border-radius:13px;display:grid;place-items:center;font-size:21px;background:#edf4ff}.stat:nth-child(2) .stat-icon{background:#fff5e8}.stat:nth-child(3) .stat-icon{background:#e9f8ef}.stat strong{font-size:25px;display:block;line-height:1.2}.stat small{color:var(--muted)}
+.section-head{display:flex;justify-content:space-between;align-items:end;gap:14px;margin:28px 0 15px}.section-head h2{margin:0;font-size:21px;letter-spacing:-.4px}.section-head p{margin:3px 0 0;color:var(--muted);font-size:13px}.filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:17px}.searchbox{flex:1;min-width:220px;position:relative}.searchbox input{padding-left:40px}.searchbox span{position:absolute;left:14px;top:10px;color:#8392a8}.field{width:100%;border:1px solid #dce5ef;background:white;border-radius:10px;padding:11px 12px;outline:none;color:var(--ink)}.field:focus{border-color:#6ba5f1;box-shadow:0 0 0 3px #1768d51a}.filters select{width:auto;min-width:150px}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.item-card{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 4px 16px #193b6507;transition:.2s}.item-card:hover{transform:translateY(-3px);box-shadow:var(--shadow)}.item-photo{height:155px;background:#edf3fb;display:grid;place-items:center;overflow:hidden;position:relative}.item-photo img{width:100%;height:100%;object-fit:cover}.photo-placeholder{font-size:48px;opacity:.75}.type-pill{position:absolute;left:12px;top:12px;background:#fff;color:var(--blue);border-radius:30px;padding:5px 10px;font-size:11px;font-weight:800;box-shadow:0 3px 10px #00000012}.item-content{padding:15px}.item-content h3{margin:0 0 5px;font-size:17px}.meta{color:var(--muted);font-size:12px;display:flex;gap:12px;flex-wrap:wrap}.item-content p{font-size:13px;color:#52627a;margin:10px 0 13px;min-height:38px}.card-foot{border-top:1px solid #eff2f6;padding-top:11px;display:flex;align-items:center;justify-content:space-between;gap:8px}.status{font-size:11px;font-weight:800;padding:5px 9px;border-radius:20px;background:#fff5e8;color:var(--orange)}.status.found{background:#eaf3ff;color:var(--blue)}.status.returned{background:#e9f8ef;color:var(--green)}.text-btn{border:0;background:transparent;color:var(--blue);font-weight:750;font-size:13px;padding:5px}
+.empty{grid-column:1/-1;text-align:center;padding:45px 20px;background:#fff;border:1px dashed #cfdae8;border-radius:16px;color:var(--muted)}.empty b{display:block;color:var(--ink);font-size:17px;margin:8px 0 3px}
+footer{text-align:center;color:#8794a7;font-size:12px;padding:22px}
+.modal-backdrop{position:fixed;inset:0;background:#14233c80;display:none;align-items:center;justify-content:center;padding:18px;z-index:10}.modal-backdrop.show{display:flex}.modal{width:min(560px,100%);max-height:92vh;overflow:auto;background:#fff;border-radius:18px;box-shadow:0 24px 70px #07162b55}.modal-head{display:flex;justify-content:space-between;align-items:center;padding:20px 22px;border-bottom:1px solid var(--line)}.modal-head h2{font-size:19px;margin:0}.close{border:0;background:#f1f4f8;border-radius:9px;width:34px;height:34px;font-size:20px;color:#61718a}.modal-body{padding:20px 22px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.form-group{margin-bottom:14px}.form-group label{display:block;font-size:13px;font-weight:750;margin-bottom:6px}.form-group small{display:block;color:var(--muted);font-size:11px;margin-top:5px}.full{grid-column:1/-1}textarea.field{resize:vertical;min-height:84px}.upload{border:1px dashed #b9cce4;background:#f8fbff;border-radius:12px;padding:15px;text-align:center;color:#667993;font-size:13px}.upload input{max-width:100%;margin-top:8px}.modal-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:18px}.detail-image{width:100%;max-height:230px;object-fit:cover;border-radius:12px;margin-bottom:14px}.detail-info{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:15px 0}.detail-info div{background:#f5f8fc;padding:11px;border-radius:10px}.detail-info small{display:block;color:var(--muted);font-size:11px}.detail-info b{font-size:13px}.notice{background:#eef5ff;border:1px solid #dceaff;border-radius:11px;padding:12px;color:#35577f;font-size:12px;margin-top:15px}.toast{position:fixed;bottom:22px;left:50%;transform:translate(-50%,20px);background:#172b49;color:white;padding:12px 18px;border-radius:11px;box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:.25s;z-index:20;font-size:13px}.toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:800px){.grid{grid-template-columns:repeat(2,1fr)}.hero{align-items:flex-start;flex-direction:column}.nav{display:none}}@media(max-width:560px){main{padding:18px 14px 40px}.topbar{padding:0 14px;height:62px}.brand{font-size:17px}.top-actions .btn{padding:9px 11px;font-size:12px}.hero{padding:24px 20px;border-radius:17px}.stats{gap:8px}.stat{padding:12px 9px;gap:8px}.stat-icon{width:34px;height:34px;font-size:16px}.stat strong{font-size:20px}.stat small{font-size:10px}.grid{grid-template-columns:1fr}.item-photo{height:180px}.form-grid,.detail-info{grid-template-columns:1fr}.full{grid-column:auto}.section-head{align-items:flex-start;flex-direction:column}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="topbar">
+  <div class="brand"><div class="logo">⌕</div><div>FindIt <span>School</span></div></div>
+  <nav class="nav"><button class="active" data-scroll="home">Beranda</button><button data-scroll="items">Daftar Barang</button></nav>
+  <div class="top-actions"><button class="btn btn-primary" id="topReport">＋ Buat Laporan</button><div class="avatar" title="Pengguna">S</div></div>
+</header>
+<main id="home">
+  <section class="hero">
+    <div><h1>Barang hilang? Temukan kembali.</h1><p>Tempat berbagi informasi barang hilang dan temuan di lingkungan sekolah. Yuk, bantu satu sama lain!</p></div>
+    <div class="hero-actions"><button class="btn btn-white" id="lostBtn">＋ Laporkan Kehilangan</button><button class="btn btn-ghost" id="foundBtn">▣ Laporkan Temuan</button></div>
+  </section>
+  <section class="stats" aria-label="Statistik">
+    <div class="stat"><div class="stat-icon">⌕</div><div><strong id="lostCount">0</strong><small>Barang hilang</small></div></div>
+    <div class="stat"><div class="stat-icon">▣</div><div><strong id="foundCount">0</strong><small>Barang ditemukan</small></div></div>
+    <div class="stat"><div class="stat-icon">✓</div><div><strong id="returnedCount">0</strong><small>Sudah dikembalikan</small></div></div>
+  </section>
+  <section id="items">
+    <div class="section-head"><div><h2>Daftar barang</h2><p>Telusuri laporan terbaru dari warga sekolah.</p></div><button class="btn btn-light" id="allReport">＋ Tambah laporan</button></div>
+    <div class="filters">
+      <div class="searchbox"><span>⌕</span><input class="field" id="searchInput" placeholder="Cari nama barang atau lokasi..."></div>
+      <select class="field" id="typeFilter" aria-label="Filter jenis"><option value="all">Semua laporan</option><option value="lost">Barang hilang</option><option value="found">Barang temuan</option></select>
+      <select class="field" id="statusFilter" aria-label="Filter status"><option value="all">Semua status</option><option value="open">Belum selesai</option><option value="returned">Sudah dikembalikan</option></select>
+    </div>
+    <div class="grid" id="itemGrid"></div>
+  </section>
+</main>
+<footer>FindIt School · Demo aplikasi barang hilang & temuan · Data tersimpan di browser ini</footer>
+</div>
+
+<div class="modal-backdrop" id="reportModal">
+ <div class="modal" role="dialog" aria-modal="true" aria-labelledby="reportTitle">
+  <div class="modal-head"><h2 id="reportTitle">Buat laporan barang</h2><button class="close" data-close aria-label="Tutup">×</button></div>
+  <form class="modal-body" id="reportForm">
+   <div class="form-grid">
+    <div class="form-group"><label for="reportType">Jenis laporan *</label><select class="field" id="reportType" required><option value="lost">Barang hilang</option><option value="found">Barang ditemukan</option></select></div>
+    <div class="form-group"><label for="category">Kategori *</label><select class="field" id="category" required><option>Alat tulis</option><option>Elektronik</option><option>Tas & pakaian</option><option>Dokumen</option><option>Aksesori</option><option>Lainnya</option></select></div>
+    <div class="form-group full"><label for="itemName">Nama barang *</label><input class="field" id="itemName" maxlength="60" placeholder="Contoh: Tempat pensil biru" required></div>
+    <div class="form-group"><label for="location">Lokasi *</label><input class="field" id="location" maxlength="70" placeholder="Contoh: Perpustakaan" required></div>
+    <div class="form-group"><label for="itemDate">Tanggal *</label><input class="field" id="itemDate" type="date" required></div>
+    <div class="form-group full"><label for="description">Deskripsi</label><textarea class="field" id="description" maxlength="350" placeholder="Ciri-ciri barang atau informasi tambahan..."></textarea></div>
+    <div class="form-group full"><label for="reporter">Nama pelapor *</label><input class="field" id="reporter" maxlength="50" placeholder="Nama depan atau nama panggilan" required></div>
+    <div class="form-group full"><label>Foto barang (opsional)</label><div class="upload">Tambahkan foto agar barang lebih mudah dikenali<br><input id="photo" type="file" accept="image/*"><small>Gunakan foto maksimal 1,5 MB. Hindari menampilkan data pribadi.</small></div></div>
+   </div>
+   <div class="notice">Demi keamanan, jangan tuliskan nomor telepon, alamat rumah, atau informasi pribadi sensitif di deskripsi publik. Serah terima barang sebaiknya melalui guru/petugas sekolah.</div>
+   <div class="modal-actions"><button type="button" class="btn btn-light" data-close>Batal</button><button class="btn btn-primary" type="submit">Kirim laporan</button></div>
+  </form>
+ </div>
+</div>
+<div class="modal-backdrop" id="detailModal">
+ <div class="modal" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+  <div class="modal-head"><h2 id="detailTitle">Detail barang</h2><button class="close" data-close aria-label="Tutup">×</button></div>
+  <div class="modal-body" id="detailBody"></div>
+ </div>
+</div>
+<div class="toast" id="toast" role="status"></div>
+<script>
+const KEY='findit-school-items-v1';
+const today=new Date().toISOString().slice(0,10);
+const sample=[
+{id:'demo1',type:'found',name:'Tas punggung hitam',category:'Tas & pakaian',location:'Depan kelas XI-A',date:today,reporter:'Alya',description:'Tas hitam dengan gantungan kecil. Diserahkan ke petugas piket.',status:'open',photo:'',demo:true},
+{id:'demo2',type:'lost',name:'Tempat pensil biru',category:'Alat tulis',location:'Perpustakaan',date:today,reporter:'Raka',description:'Tempat pensil warna biru, ada gambar bintang di bagian depan.',status:'open',photo:'',demo:true},
+{id:'demo3',type:'found',name:'Botol minum putih',category:'Aksesori',location:'Lapangan sekolah',date:today,reporter:'Dina',description:'Botol minum putih polos ditemukan setelah jam olahraga.',status:'returned',photo:'',demo:true}
+];
+let items=loadItems();
+function loadItems(){try{const saved=localStorage.getItem(KEY);return saved?JSON.parse(saved):sample}catch(e){return sample}}
+function saveItems(){try{localStorage.setItem(KEY,JSON.stringify(items));return true}catch(e){toast('Penyimpanan penuh. Coba gunakan foto yang lebih kecil.');return false}}
+function esc(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2600)}
+function statusLabel(item){return item.status==='returned'?'Sudah dikembalikan':item.type==='found'?'Ditemukan':'Belum ditemukan'}
+function render(){
+ const q=document.getElementById('searchInput').value.toLowerCase().trim(),type=document.getElementById('typeFilter').value,status=document.getElementById('statusFilter').value;
+ const lost=items.filter(x=>x.type==='lost'&&x.status!=='returned').length,found=items.filter(x=>x.type==='found'&&x.status!=='returned').length,returned=items.filter(x=>x.status==='returned').length;
+ document.getElementById('lostCount').textContent=lost;document.getElementById('foundCount').textContent=found;document.getElementById('returnedCount').textContent=returned;
+ const filtered=items.filter(x=>(type==='all'||x.type===type)&&(status==='all'||(status==='returned'?x.status==='returned':x.status!=='returned'))&&[x.name,x.location,x.category,x.description].join(' ').toLowerCase().includes(q)).sort((a,b)=>b.date.localeCompare(a.date));
+ const grid=document.getElementById('itemGrid');
+ if(!filtered.length){grid.innerHTML='<div class="empty"><div style="font-size:35px">⌕</div><b>Belum ada barang yang cocok</b>Coba kata kunci atau filter yang berbeda.</div>';return}
+ grid.innerHTML=filtered.map(x=>`<article class="item-card"><div class="item-photo">${x.photo?`<img src="${x.photo}" alt="${esc(x.name)}">`:`<div class="photo-placeholder">${x.category==='Elektronik'?'🎧':x.category==='Dokumen'?'📄':x.category==='Tas & pakaian'?'🎒':x.category==='Aksesori'?'🧴':'✏️'}</div>`}<span class="type-pill">${x.type==='lost'?'Barang hilang':'Barang temuan'}</span></div><div class="item-content"><h3>${esc(x.name)}</h3><div class="meta"><span>⌖ ${esc(x.location)}</span><span>▦ ${esc(x.date)}</span></div><p>${esc(x.description||'Tidak ada deskripsi tambahan.')}</p><div class="card-foot"><span class="status ${x.status==='returned'?'returned':x.type==='found'?'found':''}">${statusLabel(x)}</span><button class="text-btn" data-detail="${esc(x.id)}">Lihat detail →</button></div></div></article>`).join('');
+ grid.querySelectorAll('[data-detail]').forEach(b=>b.addEventListener('click',()=>showDetail(b.dataset.detail)));
+}
+function openReport(type='lost'){document.getElementById('reportForm').reset();document.getElementById('reportType').value=type;document.getElementById('itemDate').value=today;document.getElementById('reportModal').classList.add('show')}
+function closeModals(){document.querySelectorAll('.modal-backdrop').forEach(x=>x.classList.remove('show'))}
+document.getElementById('topReport').onclick=()=>openReport();document.getElementById('allReport').onclick=()=>openReport();document.getElementById('lostBtn').onclick=()=>openReport('lost');document.getElementById('foundBtn').onclick=()=>openReport('found');
+document.querySelectorAll('[data-close]').forEach(b=>b.onclick=closeModals);
+document.querySelectorAll('.modal-backdrop').forEach(b=>b.addEventListener('click',e=>{if(e.target===b)closeModals()}));
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModals()});
+['searchInput','typeFilter','statusFilter'].forEach(id=>document.getElementById(id).addEventListener(id==='searchInput'?'input':'change',render));
+document.querySelectorAll('[data-scroll]').forEach(b=>b.onclick=()=>document.getElementById(b.dataset.scroll).scrollIntoView({behavior:'smooth'}));
+document.getElementById('reportForm').addEventListener('submit',async e=>{
+ e.preventDefault();const file=document.getElementById('photo').files[0];let photo='';
+ if(file){if(!file.type.startsWith('image/')){toast('File harus berupa gambar.');return}if(file.size>1.5*1024*1024){toast('Ukuran foto maksimal 1,5 MB.');return}photo=await new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsDataURL(file)})}
+ const item={id:'i'+Date.now(),type:document.getElementById('reportType').value,name:document.getElementById('itemName').value.trim(),category:document.getElementById('category').value,location:document.getElementById('location').value.trim(),date:document.getElementById('itemDate').value,description:document.getElementById('description').value.trim(),reporter:document.getElementById('reporter').value.trim(),photo,status:'open'};
+ if(!item.name||!item.location||!item.date||!item.reporter){toast('Lengkapi semua kolom wajib.');return}
+ items.unshift(item);if(saveItems()){closeModals();render();toast('Laporan berhasil ditambahkan!')} 
+});
+function showDetail(id){
+ const x=items.find(i=>i.id===id);if(!x)return;
+ document.getElementById('detailTitle').textContent=x.name;
+ document.getElementById('detailBody').innerHTML=`${x.photo?`<img class="detail-image" src="${x.photo}" alt="${esc(x.name)}">`:''}<span class="status ${x.status==='returned'?'returned':x.type==='found'?'found':''}">${statusLabel(x)}</span><div class="detail-info"><div><small>Jenis laporan</small><b>${x.type==='lost'?'Barang hilang':'Barang temuan'}</b></div><div><small>Kategori</small><b>${esc(x.category)}</b></div><div><small>Lokasi</small><b>${esc(x.location)}</b></div><div><small>Tanggal</small><b>${esc(x.date)}</b></div><div><small>Pelapor</small><b>${esc(x.reporter)}</b></div></div><p>${esc(x.description||'Tidak ada deskripsi tambahan.')}</p><div class="notice">Jika merasa barang ini milikmu, hubungi guru atau petugas sekolah dengan menyebutkan detail barang untuk verifikasi. Jangan mengambil barang tanpa memastikan kepemilikannya.</div><div class="modal-actions">${x.status!=='returned'?`<button class="btn btn-primary" id="returnedBtn">✓ Tandai sudah dikembalikan</button>`:''}<button class="btn btn-light" data-close> Tutup </button></div>`;
+ document.getElementById('detailModal').classList.add('show');
+ const r=document.getElementById('returnedBtn');if(r)r.onclick=()=>{x.status='returned';saveItems();closeModals();render();toast('Status barang diperbarui.')};
+ document.querySelectorAll('#detailBody [data-close]').forEach(b=>b.onclick=closeModals);
+}
+render();
+</script>
+</body>
+</html>
