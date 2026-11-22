@@ -80,6 +80,7 @@ footer{text-align:center;color:#8794a7;font-size:12px;padding:22px}
    <div class="form-group"><label for="authEmail">Email</label><input class="field" id="authEmail" type="email" autocomplete="email" required></div>
    <div class="form-group" style="margin-top:12px"><label for="authPassword">Password</label><input class="field" id="authPassword" type="password" minlength="6" autocomplete="current-password" required></div>
    <p class="muted" id="authHelp">Masuk untuk mengirim laporan. Siswa yang belum punya akun dapat memilih Daftar.</p>
+   <button class="btn btn-light" style="width:100%;margin-top:8px" type="button" id="guestSignIn">Masuk sebagai Tamu</button>
    <div class="modal-actions"><button class="btn btn-light" type="button" id="toggleAuthMode">Buat akun siswa</button><button class="btn btn-primary" type="submit" id="authSubmit">Masuk</button></div>
   </form>
  </div>
@@ -87,7 +88,7 @@ footer{text-align:center;color:#8794a7;font-size:12px;padding:22px}
 <div class="toast" id="toast" role="status"></div>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js";
-import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js";
+import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInAnonymously, signOut } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js";
 import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, updateDoc, doc, serverTimestamp, getDoc } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -128,18 +129,25 @@ function updateAuthUI(){
  document.getElementById('authTitle').textContent=authMode==='login'?'Masuk ke FindIt School':'Daftar akun siswa';
  document.getElementById('authSubmit').textContent=authMode==='login'?'Masuk':'Daftar';
  document.getElementById('toggleAuthMode').textContent=authMode==='login'?'Buat akun siswa':'Kembali ke masuk';
- document.getElementById('authHelp').textContent=authMode==='login'?'Masuk untuk mengirim laporan. Siswa yang belum punya akun dapat memilih Daftar.':'Gunakan email aktif dan password minimal 6 karakter.';
+ document.getElementById('authHelp').textContent=authMode==='login'?'Masuk untuk mengirim laporan, atau gunakan akun tamu tanpa email.':'Gunakan email aktif dan password minimal 6 karakter.';
+ document.getElementById('guestSignIn').style.display=authMode==='login'?'inline-flex':'none';
 }
 function closeModals(){document.querySelectorAll('.modal-backdrop').forEach(x=>x.classList.remove('show'))}
 document.getElementById('authButton').onclick=()=>currentUser?signOut(auth).then(()=>toast('Kamu sudah keluar.')):openAuth();
 document.getElementById('toggleAuthMode').onclick=()=>{authMode=authMode==='login'?'register':'login';updateAuthUI()};
+document.getElementById('guestSignIn').onclick=async()=>{
+ const guestButton=document.getElementById('guestSignIn');guestButton.disabled=true;guestButton.textContent='Menghubungkan...';
+ try{await signInAnonymously(auth);closeModals();toast('Berhasil masuk sebagai tamu.');}
+ catch(err){console.error(err);toast(firebaseError(err.code));}
+ finally{guestButton.disabled=false;guestButton.textContent='Masuk sebagai Tamu';}
+};
 document.getElementById('authForm').addEventListener('submit',async e=>{
  e.preventDefault();const email=document.getElementById('authEmail').value.trim(),password=document.getElementById('authPassword').value;
  try{if(authMode==='login')await signInWithEmailAndPassword(auth,email,password);else await createUserWithEmailAndPassword(auth,email,password);closeModals();toast('Berhasil masuk ke FindIt School.')}
  catch(err){toast(firebaseError(err.code))}
 });
 function firebaseError(code){
- const map={'auth/email-already-in-use':'Email sudah terdaftar. Silakan masuk.','auth/invalid-email':'Format email tidak valid.','auth/weak-password':'Password minimal 6 karakter.','auth/invalid-credential':'Email atau password salah.','auth/network-request-failed':'Koneksi internet bermasalah.'};
+ const map={'auth/email-already-in-use':'Email sudah terdaftar. Silakan masuk.','auth/invalid-email':'Format email tidak valid.','auth/weak-password':'Password minimal 6 karakter.','auth/invalid-credential':'Email atau password salah.','auth/network-request-failed':'Koneksi internet bermasalah.','auth/operation-not-allowed':'Login tamu belum diaktifkan di Firebase Authentication.','auth/too-many-requests':'Terlalu banyak percobaan. Coba lagi nanti.'};
  return map[code]||'Terjadi kesalahan: '+code;
 }
 document.getElementById('topReport').onclick=()=>openReport();document.getElementById('allReport').onclick=()=>openReport();document.getElementById('lostBtn').onclick=()=>openReport('lost');document.getElementById('foundBtn').onclick=()=>openReport('found');
@@ -168,8 +176,8 @@ onAuthStateChanged(auth,async user=>{
  currentUser=user;isAdmin=false;
  if(user){try{const adminDoc=await getDoc(doc(db,'admins',user.uid));isAdmin=adminDoc.exists()&&adminDoc.data().active===true;}catch(e){console.warn('Admin check:',e)}}
  const btn=document.getElementById('authButton');
- btn.textContent=user?(user.email||'Akun')+' · Keluar':'Masuk / Daftar';
- btn.title=isAdmin?'Admin FindIt School':(user?'Akun siswa':'Masuk atau daftar');
+ btn.textContent=user?(user.isAnonymous?'Tamu · Keluar':(user.email||'Akun')+' · Keluar'):'Masuk / Daftar';
+ btn.title=isAdmin?'Admin FindIt School':(user?(user.isAnonymous?'Akun tamu':'Akun siswa'):'Masuk atau daftar');
 });
 onSnapshot(query(collection(db,'reports'),orderBy('createdAt','desc')),snap=>{
  items=snap.docs.map(d=>({id:d.id,...d.data()}));render();
